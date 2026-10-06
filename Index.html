@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Pendataan & QR Scanner Siswa</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Library HTML5-QRCode untuk Scanner (Akan dipakai di Tahap 4) -->
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+</head>
+<body>
+    <!-- Elemen Audio untuk Notifikasi Sukses Scan -->
+    <!-- Ganti 'excellent.mp3' dengan nama file audio lokal Anda jika ada -->
+    <audio id="audioSuccess" src="yuji.mp3" preload="auto"></audio>
+
+    <div class="app-container glass-panel">
+        <header>
+            <h2 class="app-title">Portal Siswa</h2>
+            <p class="app-subtitle">Pendataan Siswa & Absensi Misting Thumbler</p>
+            
+            <!-- Navigasi Tab -->
+            <div class="tab-container">
+                <button id="btnTabForm" class="tab-btn active" onclick="switchTab('form')">Pendataan Siswa</button>
+                <button id="btnTabScanner" class="tab-btn" onclick="switchTab('scanner')">Scanner Admin</button>
+            </div>
+        </header>
+
+        <main>
+            <!-- BAGIAN 1: FORMULIR PENDAFTARAN SISWA -->
+            <section id="formSection" class="section-active">
+                <form id="studentForm">
+                   <!-- GANTI BAGIAN KELAS DI DALAM #studentForm MENJADI INI: -->
+<div class="form-group">
+    <label>Kelas (Format: 10.1 - 12.12)</label>
+    <div style="display: flex; gap: 10px;">
+        <select id="tingkat" required style="flex: 1;">
+            <option value="" disabled selected>Tingkat</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+        </select>
+        <span style="font-size: 20px; font-weight: bold; margin-top: 5px;">.</span>
+        <select id="ruang" required style="flex: 1;">
+            <option value="" disabled selected>Kelas</option>
+            <option value="1">1</option><option value="2">2</option>
+            <option value="3">3</option><option value="4">4</option>
+            <option value="5">5</option><option value="6">6</option>
+            <option value="7">7</option><option value="8">8</option>
+            <option value="9">9</option><option value="10">10</option>
+            <option value="11">11</option><option value="12">12</option>
+        </select>
+    </div>
+</div>
+
+<!-- TAMBAHKAN INI TEPAT DI ATAS TOMBOL NYALAKAN KAMERA DI #scannerSection: -->
+<div class="form-group" style="text-align: left; background: #e0f2fe; padding: 10px; border-radius: 10px; border: 1px solid #7dd3fc;">
+    <label style="color: #0284c7; font-weight: bold;">Pilih Barang Bawaan Siswa:</label>
+    <select id="inputBawaan" style="border-color: #38bdf8;">
+        <option value="Misting & Tumbler" selected>𓌉◯𓇋𓌉🥤 Misting & Tumbler (Keduanya)</option>
+        <option value="Misting">𓌉◯𓇋𓌉 Misting Saja</option>
+        <option value="Tumbler">🥤 Tumbler Saja</option>
+    </select>
+</div>
+                    
+                    <div class="form-group">
+                        <label for="nama">Nama Lengkap</label>
+                        <input type="text" id="nama" name="nama" placeholder="Masukkan Nama Lengkap" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="kelas">Kelas</label>
+                        <select id="kelas" name="kelas" required>
+                            <option value="" disabled selected>Pilih Kelas</option>
+                            <option value="X">Kelas 10</option>
+                            <option value="XI">Kelas 11</option>
+                            <option value="XII">Kelas 12</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="gmail">Email Aktif (Untuk menerima QR Code)</label>
+                        <input type="email" id="gmail" name="gmail" placeholder="contoh@gmail.com" required>
+                    </div>
+                    
+                    <button type="submit" id="btnSubmitForm" class="btn-primary">
+                        <span id="submitText">Daftar & Dapatkan QR Code</span>
+                        <div id="loadingSpinner" class="spinner hidden"></div>
+                    </button>
+                </form>
+            </section>
+
+            <!-- BAGIAN 2: SCANNER QR CODE ADMIN -->
+            <section id="scannerSection" class="section-hidden">
+                <div class="scanner-wrapper">
+                    <p class="scanner-instruction">Arahkan QR Code ke area kamera di bawah ini:</p>
+                    
+                    <!-- Area Kamera Scanner -->
+                    <div id="reader"></div>
+                    
+                    <div class="scanner-controls">
+                        <button id="btnStartScan" class="btn-primary btn-scan">Nyalakan Kamera</button>
+                        <button id="btnStopScan" class="btn-secondary btn-scan hidden">Matikan Kamera</button>
+                    </div>
+                    
+                    <!-- Hasil Scan Terakhir -->
+                    <div id="scanResult" class="scan-result-card hidden">
+                        <h4>Hasil Pemindaian Terakhir:</h4>
+                        <p id="resultText">-</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- UI Notifikasi (Toast) -->
+    <div id="toast" class="toast">
+        <span id="toastMessage">Pesan Notifikasi</span>
+    </div>
+
+    <!-- Script sementara untuk perpindahan Tab (Logika utama di Tahap 3 & 4) -->
+    <script>
+        function switchTab(tabName) {
+            const formSec = document.getElementById('formSection');
+            const scanSec = document.getElementById('scannerSection');
+            const btnForm = document.getElementById('btnTabForm');
+            const btnScan = document.getElementById('btnTabScanner');
+
+            if (tabName === 'form') {
+                formSec.className = 'section-active';
+                scanSec.className = 'section-hidden';
+                btnForm.classList.add('active');
+                btnScan.classList.remove('active');
+            } else {
+                formSec.className = 'section-hidden';
+                scanSec.className = 'section-active';
+                btnScan.classList.add('active');
+                btnForm.classList.remove('active');
+            }
+        }
+    </script>
+    
+    <!-- File JavaScript (Akan diisi di Tahap 3 dan 4) -->
+    <script src="form.js"></script>
+    <script src="scanner.js"></script>
+</body>
+</html>
