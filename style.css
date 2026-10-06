@@ -1,0 +1,280 @@
+/* Import Google Fonts (Poppins untuk kesan modern & clean) */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* --- VARIABEL WARNA (Navy/Ocean Blue Theme) --- */
+:root {
+    --bg-gradient-1: #0f172a; /* Deep Navy */
+    --bg-gradient-2: #1e3a8a; /* Ocean Blue */
+    --primary: #2563eb;       /* Royal Blue */
+    --primary-hover: #1d4ed8; 
+    --secondary: #64748b;
+    --success: #10b981;       /* Emerald Green */
+    --error: #ef4444;         /* Red */
+    --text-main: #1e293b;
+    --text-light: #64748b;
+    --glass-bg: rgba(255, 255, 255, 0.85);
+    --glass-border: rgba(255, 255, 255, 0.3);
+}
+
+/* --- RESET & GLOBAL --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, var(--bg-gradient-1), var(--bg-gradient-2));
+    padding: 20px;
+    position: relative;
+}
+
+/* --- GLASSMORPHISM CONTAINER --- */
+.app-container {
+    width: 100%;
+    max-width: 500px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    padding: 30px;
+    overflow: hidden;
+}
+
+/* --- HEADER & TYPOGRAPHY --- */
+header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.app-title {
+    color: var(--bg-gradient-2);
+    font-weight: 700;
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+
+.app-subtitle {
+    color: var(--text-light);
+    font-size: 14px;
+}
+
+/* --- NAVIGASI TAB --- */
+.tab-container {
+    display: flex;
+    background: #e2e8f0;
+    border-radius: 9999px;
+    padding: 5px;
+    margin-top: 20px;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    background: transparent;
+    border-radius: 9999px;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--text-light);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.tab-btn.active {
+    background: white;
+    color: var(--bg-gradient-2);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* --- LAYOUT SECTION --- */
+.section-active {
+    display: block;
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+.section-hidden {
+    display: none;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- FORMULIR --- */
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-main);
+    margin-bottom: 6px;
+}
+
+.form-group input, 
+.form-group select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #cbd5e1;
+    border-radius: 12px;
+    font-size: 14px;
+    color: var(--text-main);
+    background: white;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus, 
+.form-group select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+}
+
+/* --- TOMBOL (BUTTONS) --- */
+.btn-primary, 
+.btn-secondary {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.btn-primary:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+}
+
+.btn-primary:disabled {
+    background: #94a3b8;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn-secondary {
+    background: #f1f5f9;
+    color: var(--text-main);
+    border: 1px solid #cbd5e1;
+}
+
+.btn-secondary:hover {
+    background: #e2e8f0;
+}
+
+/* --- SCANNER AREA --- */
+.scanner-wrapper {
+    text-align: center;
+}
+
+.scanner-instruction {
+    font-size: 13px;
+    color: var(--text-light);
+    margin-bottom: 15px;
+}
+
+#reader {
+    width: 100%;
+    min-height: 250px;
+    border: 3px dashed var(--primary);
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 15px;
+    background: #f8fafc;
+}
+
+.scanner-controls {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-scan {
+    flex: 1;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.scan-result-card {
+    margin-top: 20px;
+    padding: 15px;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 12px;
+    text-align: left;
+}
+
+.scan-result-card h4 {
+    color: var(--success);
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.scan-result-card p {
+    font-size: 13px;
+    color: var(--text-main);
+}
+
+/* --- TOAST NOTIFICATION (Aesthetic Alert) --- */
+.toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    padding: 12px 24px;
+    background: var(--text-main);
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 50px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    z-index: 1000;
+}
+
+.toast.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}
+
+.toast.success { background: var(--success); }
+.toast.error { background: var(--error); }
+
+/* --- LOADING SPINNER --- */
+.spinner {
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255,255,255,0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 1s ease-in-out infinite;
+    margin-left: 10px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
